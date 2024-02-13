@@ -21,13 +21,6 @@ mod_settings = {
         scope = MOD_SETTING_SCOPE_RUNTIME,
     },
     {
-        id = "is_transparent",
-        ui_name = "Transparency",
-        value_default = "off",
-        values = { {"on", "on"}, {"off", "off"} },
-        scope = MOD_SETTING_SCOPE_RUNTIME,
-    },
-    {
         ui_fn = mod_setting_vertical_spacing,
         not_setting = true,
     },
