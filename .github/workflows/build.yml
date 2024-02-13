@@ -20,12 +20,16 @@ jobs:
           copy .\target\i686-pc-windows-msvc\release\yt_wrapper.dll .\lib\
           rmdir /S /q .\target\
 
-      - name: Create a release
-        uses: thedoctor0/zip-release@0.7.5
-        with:
-          filename: 'release-v${{ env.VERSION }}.zip'
+      - name: Create a release archive
+        shell: sh
+        run: |
+          mkdir ./.youtube_integration
+          mv ./* ./.youtube_integration
+          mv ./.youtube_integration ./youtube_integration
+          7z a -mx9 "release-v${{ env.VERSION }}.zip" ./youtube_integration
 
-      - uses: ncipollo/release-action@v1
+      - name: Upload the release
+        uses: ncipollo/release-action@v1
         with:
           tag: 'v${{ env.VERSION }}'
           artifacts: 'release-v${{ env.VERSION }}.zip'
