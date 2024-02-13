@@ -1,0 +1,16 @@
+[package]
+name = "youtube_integration"
+version = "{VERSION}"
+edition = "2021"
+
+[lib]
+name = "yt_wrapper"
+crate-type = ["cdylib"]
+
+[dependencies]
+minreq = { version = "2.11", features = ["https-rustls"] }
+json = "0.12"
+simple-logging = "2.0"
+tokio = { version = "1.35", default_features = false, features = ["sync", "time", "rt", "rt-multi-thread"] }
+chrono = { version = "0.4", default_features = false, features = ["now"] }
+log = "0.4"

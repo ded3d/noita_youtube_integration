@@ -1,0 +1,31 @@
+name: Build and release an artifact
+env:
+  VERSION: 0.1.0
+on: workflow_dispatch
+jobs:
+  buildAndRelease:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Paste the version
+        shell: powershell
+        run: Get-ChildItem -Recurse -File -Include *.lua,*.toml | ForEach-Object { (Get-Content $_.FullName) | ForEach-Object { $_ -replace "`{VERSION`}", $env:VERSION } | Set-Content $_.FullName }
+
+      - name: Build the package
+        shell: cmd
+        run: |
+          rustup target add i686-pc-windows-msvc
+          cargo build --release --target i686-pc-windows-msvc
+          copy .\target\i686-pc-windows-msvc\release\yt_wrapper.dll .\lib\
+          rmdir /S /q .\target\
+
+      - name: Create a release
+        uses: thedoctor0/zip-release@0.7.5
+        with:
+          filename: 'release-v${{ env.VERSION }}.zip'
+
+      - uses: ncipollo/release-action@v1
+        with:
+          tag: 'v${{ env.VERSION }}'
+          artifacts: 'release-v${{ env.VERSION }}.zip'
