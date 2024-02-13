@@ -254,14 +254,14 @@ function update_settings(randomize_ticks)
     WINDOW_SHOWN = ModSettingGet("youtube_integration.shown") == "shown"
     local freq = ModSettingGet("youtube_integration.frequency")
     if freq == "high" then
-        TICKS_MIN = 40
-        TICKS_MAX = 240
-    elseif freq == "medium" then
-        TICKS_MIN = 60
-        TICKS_MAX = 360
-    else
         TICKS_MIN = 120
         TICKS_MAX = 630
+    elseif freq == "medium" then
+        TICKS_MIN = 473
+        TICKS_MAX = 1183
+    else
+        TICKS_MIN = 630
+        TICKS_MAX = 2520
     end
     if randomize_ticks then
         ticks_before_poll = math.random(TICKS_MIN, TICKS_MAX)

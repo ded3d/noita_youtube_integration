@@ -51,9 +51,9 @@ mod_settings = {
                 ui_name = "Poll frequency",
                 value_default = "medium",
                 values = {
-                    {"high", "high"}, -- [40; 240]
-                    {"medium", "medium"}, -- [60; 360]
-                    {"low", "low"} -- [120; 630]
+                    {"high", "high"}, -- [120; 630]
+                    {"medium", "medium"}, -- [473; 1183]
+                    {"low", "low"} -- [630; 2520]
                 },
                 scope = MOD_SETTING_SCOPE_RUNTIME,
             }
