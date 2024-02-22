@@ -218,8 +218,8 @@ pub unsafe extern fn StartPoll(
     let mut remaining = u64::from(1000 * duration);
     let poll_period = u64::from(poll_period);
     let from = chrono::Utc::now();
-    let mut lock = UNIQUE_USERS.blocking_lock();
-    *lock = vec![];
+    let mut users_lock = UNIQUE_USERS.blocking_lock();
+    *users_lock = vec![];
     let addr = format!(
         "https://www.googleapis.com/youtube/v3/liveChat/messages?part=id%2C%20snippet&key={}&liveChatId={}",
         key_cstr.to_string_lossy(), chat_id_cstr.to_string_lossy()
@@ -230,6 +230,9 @@ pub unsafe extern fn StartPoll(
     TOKIO_RT.get().unwrap().spawn(async move {
         IS_BUSY = true;
         IS_POLL_RUNNING = true;
+        let mut poll_lock = POLL_RESULT.write().await;
+        *poll_lock = [0, 0, 0, 0];
+        std::mem::drop(poll_lock);
         while remaining > 0 {
             let address = addr.clone();
             if remaining > poll_period {
