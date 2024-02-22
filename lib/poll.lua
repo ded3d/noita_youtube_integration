@@ -7,6 +7,7 @@ Poll = {}
 
 dofile_once("data/scripts/streaming_integration/event_list.lua")
 
+Poll.was_interrupted = false
 Poll.current_keys = {}
 Poll.current_events = {}
 Poll.winner = {}
@@ -42,6 +43,7 @@ function Poll.StartPoll(api_key, chat_id, duration, period)
         Poll.winner = {}
         Poll.cursors[i] = ""
     end
+    Poll.was_interrupted = false
     YtLib.StartPoll(api_key, chat_id, duration, period)
 end
 
@@ -72,6 +74,10 @@ function Poll.EndPoll()
     coroutine.resume(coro)
 end
 
+function Poll.Interrupt()
+    Poll.was_interrupted = true
+end
+
 ---@param shown boolean
 function Poll.Popup(shown)
     if not shown and not YtLib.IsPollRunning() then
@@ -87,7 +93,12 @@ function Poll.Popup(shown)
         local h = ImGui.GetWindowHeight()
         local result = YtLib.GetPollResult()[0]
 
-        if not Poll.current_events[0] then
+        if Poll.was_interrupted then
+            ImGui.SetCursorPos(0.5 * w - 43, 0.5 * h - 9)
+            ImGui.Text("interrupted")
+            ImGui.End()
+            return
+        elseif not Poll.current_events[0] then
             ImGui.SetCursorPos(0.5 * w - 43, 0.5 * h - 9)
             ImGui.Text("not initialized")
             ImGui.End()

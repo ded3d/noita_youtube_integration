@@ -152,6 +152,16 @@ local function main_loop()
             end
             ImGui.EndDisabled()
             ImGui.SameLine()
+            ImGui.BeginDisabled(not enabled or not is_poll_running)
+            if ImGui.SmallButton("interrupt") then
+                is_poll_running = false
+                _is_poll_running = false
+                YtLib.InterruptPoll()
+                ticks_before_poll = math.random(TICKS_MIN, TICKS_MAX)
+                return
+            end
+            ImGui.EndDisabled()
+            ImGui.SameLine()
             if ImGui.SmallButton(_popup_toggle_label) then
                 popup_shown = not popup_shown
             end
@@ -324,6 +334,7 @@ function OnPlayerDied()
     if not initialized then
         return
     end
+    YtLib.InterruptPoll()
     is_dead = true
     enabled = false
     WINDOW_SHOWN = false

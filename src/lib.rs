@@ -344,3 +344,13 @@ pub unsafe extern fn GetChatId() -> *mut c_char {
 pub unsafe extern fn GetPollResult() -> *const [u16; 4] {
     &*POLL_RESULT.blocking_read()
 }
+
+#[no_mangle]
+pub unsafe extern fn InterruptPoll() {
+    let rt = TOKIO_RT.take().unwrap();
+    rt.shutdown_background();
+    TOKIO_RT.set(Runtime::new().unwrap()).unwrap();
+    POLL_RESULT = RwLock::new([0, 0, 0, 0]);
+    IS_POLL_RUNNING = false;
+    IS_BUSY = false;
+}

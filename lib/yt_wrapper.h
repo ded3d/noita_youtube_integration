@@ -14,3 +14,4 @@ bool GetVideoIdCheck(void);
 char* GetLastValidVideoId(void);
 char* GetChatId(void);
 const uint16_t (*GetPollResult(void))[4];
+void InterruptPoll(void);
