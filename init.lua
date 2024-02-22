@@ -5,8 +5,8 @@ YOUTUBE_INTEGRATION_VERSION = "{VERSION}"
 local initialized
 ---@type boolean
 local enabled
----@type boolean
-local is_dead
+---@type boolean, boolean
+local is_dead, paused
 ---@type table
 local Poll
 ---@type table
@@ -47,12 +47,12 @@ local clicked
 local ticks_before_poll
 
 
-local function ui_loop()
+local function main_loop()
     local ffi = require("ffi")
     local is_busy = YtLib.IsBusy()
     local _is_poll_running = YtLib.IsPollRunning()
     local last_id = ffi.string(YtLib.GetLastValidVideoId())
-    if ticks_before_poll == 0 and enabled then
+    if ticks_before_poll == 0 and enabled and not is_dead and not paused then
         is_poll_running = true
         ticks_before_poll = math.random(TICKS_MIN, TICKS_MAX)
         Poll.StartPoll(
@@ -63,7 +63,7 @@ local function ui_loop()
         )
     elseif enabled and ticks_before_poll == -1 then
         ticks_before_poll = math.random(TICKS_MIN, TICKS_MAX)
-    elseif enabled and (not is_poll_running or not _is_poll_running) then
+    elseif enabled and (not is_poll_running or not _is_poll_running) and not is_dead then
         ticks_before_poll = ticks_before_poll - 1
     elseif not enabled then
         ticks_before_poll = math.max(ticks_before_poll - 1, -1)
@@ -140,7 +140,7 @@ local function ui_loop()
             ImGui.Spacing()
             ImGui.SeparatorText("debug")
 
-            ImGui.BeginDisabled(not enabled)
+            ImGui.BeginDisabled(not enabled or is_poll_running)
             if ImGui.SmallButton("test poll") then
                 is_poll_running = true
                 Poll.StartPoll(
@@ -307,6 +307,7 @@ function OnModInit()
     chat_id = ""
 
     update_settings(false)
+    paused = false
     is_dead = false
     is_poll_running = false
     popup_shown = false
@@ -319,7 +320,7 @@ function OnModInit()
 end
 
 
-function OnPlayerDead()
+function OnPlayerDied()
     if not initialized then
         return
     end
@@ -331,16 +332,17 @@ function OnPlayerDead()
     ticks_before_poll = -1
 end
 
-function OnPausedChanged()
+function OnPausedChanged(is_paused, is_inventory_pause)
     if not initialized then
         return
     end
+    paused = is_paused or is_inventory_pause
     update_settings(api_key_state == 1 and video_id_state == 1)
 end
 
 function OnWorldPostUpdate()
-    if not initialized or is_dead then
+    if not initialized or is_dead or paused then
         return
     end
-    ui_loop()
+    main_loop()
 end
