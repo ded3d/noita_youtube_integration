@@ -267,11 +267,11 @@ function update_settings(randomize_ticks)
         TICKS_MIN = 120
         TICKS_MAX = 630
     elseif freq == "medium" then
-        TICKS_MIN = 473
-        TICKS_MAX = 1183
-    else
         TICKS_MIN = 630
         TICKS_MAX = 2520
+    else
+        TICKS_MIN = 2520
+        TICKS_MAX = 6300
     end
     if randomize_ticks then
         ticks_before_poll = math.random(TICKS_MIN, TICKS_MAX)

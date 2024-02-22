@@ -52,8 +52,8 @@ mod_settings = {
                 value_default = "medium",
                 values = {
                     {"high", "high"}, -- [120; 630]
-                    {"medium", "medium"}, -- [473; 1183]
-                    {"low", "low"} -- [630; 2520]
+                    {"medium", "medium"}, -- [630; 2520]
+                    {"low", "low"} -- [2520; 6300]
                 },
                 scope = MOD_SETTING_SCOPE_RUNTIME,
             }
