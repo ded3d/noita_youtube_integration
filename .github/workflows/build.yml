@@ -1,6 +1,6 @@
 name: Build and release an artifact
 env:
-  VERSION: 0.1.1
+  VERSION: 0.1.2
 on: workflow_dispatch
 jobs:
   buildAndRelease:

@@ -1,5 +1,5 @@
 
-YOUTUBE_INTEGRATION_VERSION = "v{VERSION}"
+YOUTUBE_INTEGRATION_VERSION = "{VERSION}"
 
 ---@type boolean
 local initialized
@@ -57,7 +57,7 @@ local function ui_loop()
         ticks_before_poll = math.random(TICKS_MIN, TICKS_MAX)
         Poll.StartPoll(
             api_key,
-            video_id,
+            chat_id,
             ModSettingGet("youtube_integration.duration"),
             ModSettingGet("youtube_integration.period")
         )
@@ -145,7 +145,7 @@ local function ui_loop()
                 is_poll_running = true
                 Poll.StartPoll(
                     api_key,
-                    video_id,
+                    chat_id,
                     ModSettingGet("youtube_integration.duration"),
                     ModSettingGet("youtube_integration.period")
                 )
