@@ -157,6 +157,7 @@ local function main_loop()
                 is_poll_running = false
                 _is_poll_running = false
                 YtLib.InterruptPoll()
+                Poll.Interrupt()
                 ticks_before_poll = math.random(TICKS_MIN, TICKS_MAX)
                 return
             end
@@ -335,6 +336,7 @@ function OnPlayerDied()
         return
     end
     YtLib.InterruptPoll()
+    Poll.Interrupt()
     is_dead = true
     enabled = false
     WINDOW_SHOWN = false
