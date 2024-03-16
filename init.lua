@@ -290,6 +290,7 @@ function OnModInit()
         initialized = false
         return
     end
+    math.randomseed(os.time())
     
     local build_check = io.open("mods/youtube_integration/lib/yt_wrapper.dll", "r")
     if build_check == nil then

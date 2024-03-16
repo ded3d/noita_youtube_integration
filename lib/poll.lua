@@ -18,15 +18,24 @@ Poll.cursors = {
     [3] = "",
 }
 
----@return integer
-local function _select_unique_key()
-    if not Poll.current_keys[0] then
-        return next(streaming_events, math.random(#streaming_events))
-    else
-        local a = next(streaming_events, math.random(#streaming_events))
-        local b = Poll.current_keys[0]
-        return (a * b + 1) % #streaming_events
+---@return table
+local function _select_unique_keys()
+    local selected = {}
+    local i = 0
+    while i < 4 do
+        local index = math.random(#streaming_events)
+        if not selected[index] then
+            selected[index] = streaming_events[index]
+            i = i + 1
+        end
     end
+    local result = {}
+    i = 0
+    for k in pairs(selected) do
+        result[i] = k
+        i = i + 1
+    end
+    return result
 end
 
 ---@param api_key string
@@ -34,13 +43,10 @@ end
 ---@param duration integer
 ---@param period integer
 function Poll.StartPoll(api_key, chat_id, duration, period)
-    Poll.current_keys = {}
-    Poll.current_events = {}
+    Poll.winner = {}
+    Poll.current_keys = _select_unique_keys()
     for i=0,3 do
-        local key = _select_unique_key()
-        Poll.current_keys[i] = key
-        Poll.current_events[i] = streaming_events[key]
-        Poll.winner = {}
+        Poll.current_events[i] = streaming_events[Poll.current_keys[i]]
         Poll.cursors[i] = ""
     end
     Poll.was_interrupted = false
