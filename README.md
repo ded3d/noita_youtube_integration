@@ -1,5 +1,5 @@
 
-# Noita YouTube Integration mod `v0.1.4`
+# Noita YouTube Integration mod `v0.1.5`
 
 Thanks to [dextercd](https://github.com/dextercd) for making this mod possible.
 
@@ -23,7 +23,7 @@ Please note that the mod is currently on active development stage.
 2. Get the mod [source code](https://github.com/ded3d/noita_youtube_integration/archive/refs/heads/master.zip).
 3. Run the following Powershell script:
 ```powershell
-Get-ChildItem -Recurse -File -Include *.lua,*.toml | ForEach-Object { (Get-Content $_.FullName) | ForEach-Object { $_ -replace "`{VERSION`}", "0.1.4" } | Set-Content $_.FullName }
+Get-ChildItem -Recurse -File -Include *.lua,*.toml | ForEach-Object { (Get-Content $_.FullName) | ForEach-Object { $_ -replace "`{VERSION`}", "0.1.5" } | Set-Content $_.FullName }
 rustup target add i686-pc-windows-msvc
 cargo build --release --target i686-pc-windows-msvc
 Copy-Item -Path .\target\i686-pc-windows-msvc\release\yt_wrapper.dll -Destination .\lib\
@@ -35,7 +35,7 @@ Copy-Item -Path .\target\i686-pc-windows-msvc\release\yt_wrapper.dll -Destinatio
 2. Get the mod [source code](https://github.com/ded3d/noita_youtube_integration/archive/refs/heads/master.zip).
 3. Run the following script:
 ```sh
-find . -type f \( -name "*.lua" -o -name "*.toml" \) -exec sed -i 's/{VERSION}/0.1.4/g' {} +
+find . -type f \( -name "*.lua" -o -name "*.toml" \) -exec sed -i 's/{VERSION}/0.1.5/g' {} +
 rustup target add i686-pc-windows-gnu
 cargo build --release --target i686-pc-windows-gnu
 cp ./target/i686-pc-windows-gnu/release/yt_wrapper.dll ./lib/
