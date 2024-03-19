@@ -3,8 +3,6 @@
 
 Thanks to [dextercd](https://github.com/dextercd) for making this mod possible.
 
-Please note that the mod is currently on active development stage.
-
 ## Installation
 
 1. If you already have a Google Projects API key with access to YouTube Data API v3, just paste it to `key.txt` file and jump to step 4. But if you don't, go to [Google Cloud Developer Console](https://console.cloud.google.com/cloud-resource-manager). There you need to create a new project with any preferred name.
@@ -28,6 +26,7 @@ rustup target add i686-pc-windows-msvc
 cargo build --release --target i686-pc-windows-msvc
 Copy-Item -Path .\target\i686-pc-windows-msvc\release\yt_wrapper.dll -Destination .\lib\
 ```
+4. Rename the mod folder to `youtube_integration`.
 
 ### Linux
 
@@ -40,3 +39,4 @@ rustup target add i686-pc-windows-gnu
 cargo build --release --target i686-pc-windows-gnu
 cp ./target/i686-pc-windows-gnu/release/yt_wrapper.dll ./lib/
 ```
+4. Rename the mod folder to `youtube_integration`.
